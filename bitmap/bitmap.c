@@ -92,35 +92,31 @@ void bitmap_clear_all(bitmap_t *bitmap)
 
 void bitmap_set_range(bitmap_t* bitmap, size_t begin, size_t end)
 {
-	unsigned char one = 0xff, zero = 0x00;
-
 	if (begin == end) return;
 	size_t start_pos = begin >> SHIFT;
 	size_t end_pos = end >> SHIFT;
 	if (start_pos == end_pos)
 	{
-		bitmap->bitmap[start_pos] |= ~(one << (end % BITS))&(one << (begin % BITS));
+		bitmap->bitmap[start_pos] |= ~(0xFF << (end % BITS))&(0xFF << (begin % BITS));
 		return;
 	}
-	bitmap->bitmap[start_pos] |= one << (begin % BITS);
+	bitmap->bitmap[start_pos] |= 0xFF << (begin % BITS);
 	memset(&bitmap->bitmap[start_pos + 1], 0xFF, end_pos - start_pos - 1);
-	bitmap->bitmap[end_pos] |= ~(one << (end % BITS));
+	bitmap->bitmap[end_pos] |= ~(0xFF << (end % BITS));
 }
 void bitmap_clear_range(bitmap_t* bitmap, size_t begin, size_t end)
 {
-	unsigned char one = 0xff, zero = 0x00;
-
 	if (begin == end) return;
 	size_t start_pos = begin >> SHIFT;
 	size_t end_pos = end >> SHIFT;
 	if (start_pos == end_pos)
 	{
-		bitmap->bitmap[start_pos] &= ~( ~(one << (end % BITS)) & (one << (begin % BITS)));
+		bitmap->bitmap[start_pos] &= ~( ~(0xFF << (end % BITS)) & (0xFF << (begin % BITS)));
 		return;
 	}
-	bitmap->bitmap[start_pos] &= ~(one << (begin % BITS));
+	bitmap->bitmap[start_pos] &= ~(0xFF << (begin % BITS));
 	memset(&bitmap->bitmap[start_pos + 1], 0x00, end_pos - start_pos - 1);
-	bitmap->bitmap[end_pos] &= one << (end % BITS);
+	bitmap->bitmap[end_pos] &= 0xFF << (end % BITS);
 }
 
 bitmap_t* bitmap_or(const bitmap_t* x1, const bitmap_t* x2)
