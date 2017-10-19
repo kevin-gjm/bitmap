@@ -3,24 +3,7 @@
 
 int main(int argc, char *argv[]) 
 {
-	bitmap_t* bit1 = bitmap_create(1000000);
-	bitmap_t* bit2 = bitmap_create(1000000);
-	
-	bitmap_t* bit3 = bitmap_and(bit1, bit2);
-	for (int i = 0; i <= bit1->size; i++)
-	{
-		if (bitmap_test(bit1, i))
-		{
-			printf("%d:1\n",i);
-		}
-		else
-		{
-			printf("%d:0\n", i);
-		}
-	}
-
-
-#if 0
+#if 1
   size_t size;
   for (size = 0; size <= 1024; ++size) {
     bitmap_t *bitmap = bitmap_create(size);
