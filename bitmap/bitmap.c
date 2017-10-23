@@ -209,3 +209,31 @@ bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2)
 
 	return ans;
 }
+
+bitmap_t* bitmap_move_range_to_new(const bitmap_t* x, size_t offset, size_t count)
+{
+	if (!x || offset%BITS || count%BITS || !count)//offset can be 0. but count can not!
+	{
+		fprintf(stderr, "Error: offset and count must be an integer multiple of 8， and count can not be 0!\n");
+		return NULL;
+	}
+	bitmap_t* bit = bitmap_create(count - 1); 
+	memcpy(bit->bitmap, &(x->bitmap[offset >> SHIFT]), count/BITS);
+	return bit;
+}
+
+int bitmap_move_range_to_old(bitmap_t* dst, const bitmap_t* src, size_t offset, size_t count)
+{
+	if (!dst||!src || offset%BITS || count%BITS || !count)//offset can be 0. but count can not!
+	{
+		fprintf(stderr, "Error: paramer error!\n");
+		return -1;
+	}
+	if (dst->size < offset + count - 1)
+	{
+		fprintf(stderr, "Error: dst not have enough space!\n");
+		return -1;
+	}
+	memcpy(&(dst->bitmap[offset >> SHIFT]), src->bitmap, count / BITS);
+	return 0;
+}

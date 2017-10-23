@@ -1,15 +1,3 @@
-/*  
- * This file provides the api of bitmap.
- * bitmap: a form of hash, using one bit to present an int number.
- *
- *  FileName:    bitmap.h
- *  Description: bitmap related functions  api declarations.
- *  Author:      wzb (zhongbo.wzb@alibaba-inc.com)
- *  Date:        2013-11-25 16:12
- *  Version:     0.1
- *
- * */
-
 #ifndef _BITMAP_H__
 #define _BITMAP_H__
 #ifdef __cplusplus
@@ -68,6 +56,18 @@ bitmap_t* bitmap_and(const bitmap_t* x1, const bitmap_t* x2);
 /* return a new bitmap of x1^x2 */
 bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2);
 
+/**
+* return a new bitmap. x[offset,offset+count)-->newbitmap[0,count)
+* param: offset must be an integer multiple of 8.
+* param: count must be an integer multiple of 8.
+**/
+bitmap_t* bitmap_move_range_to_new(const bitmap_t* x,size_t offset,size_t count);
+/**
+* src[0,count)-->x[offset,offset+count)
+* param: offset must be an integer multiple of 8.
+* param: count must be an integer multiple of 8.
+**/
+int bitmap_move_range_to_old(bitmap_t* dst, const bitmap_t* src, size_t offset, size_t count);
 
 #ifdef __cplusplus
 }
