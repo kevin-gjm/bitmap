@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) 
 {
-#if 1
+#if 0
   size_t size;
   for (size = 0; size <= 1024; ++size) {
     bitmap_t *bitmap = bitmap_create(size);

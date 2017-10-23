@@ -20,7 +20,7 @@ typedef struct _bitmap
 } bitmap_t;
 
 
-/* create size bits bitmap */
+/* create size bits bitmap. have size+1 number. store [0,size] */
 bitmap_t *bitmap_create(size_t size);
 
 /* destroy the unused bitmap */
@@ -55,6 +55,9 @@ bitmap_t* bitmap_and(const bitmap_t* x1, const bitmap_t* x2);
 
 /* return a new bitmap of x1^x2 */
 bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2);
+
+/* return the count of nums in the bitmap*/
+size_t bitmap_count(bitmap_t* bitmap);
 
 /**
 * return a new bitmap. x[offset,offset+count)-->newbitmap[0,count)

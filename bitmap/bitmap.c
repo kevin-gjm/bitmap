@@ -126,8 +126,8 @@ bitmap_t* bitmap_or(const bitmap_t* x1, const bitmap_t* x2)
 	size_t x1_count = (x1->size >> SHIFT) + ((x1->size & MASK) ? 1 : 1);
 	size_t x2_count = (x2->size >> SHIFT) + ((x2->size & MASK) ? 1 : 1);
 	//extern part set to 0
-	x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] & (~(0xFF << ((x1->size + 1) % BITS == 0 ? BITS : (x1->size + 1) % BITS) ));
-	x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] & (~(0xFF << ((x2->size + 1) % BITS == 0 ? BITS : (x2->size + 1) % BITS) ));
+	x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] & (~(0xFF << (x1->size%BITS + 1)));
+	x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] & (~(0xFF << (x2->size%BITS + 1)));
 	size_t min = x1_count <= x2_count ? x1_count : x2_count;
 	size_t max = x1_count <= x2_count ? x2_count : x1_count;
 	
@@ -156,8 +156,8 @@ bitmap_t* bitmap_and(const bitmap_t* x1, const bitmap_t* x2)
 	size_t x1_count = (x1->size >> SHIFT) + ((x1->size & MASK) ? 1 : 1);
 	size_t x2_count = (x2->size >> SHIFT) + ((x2->size & MASK) ? 1 : 1);
 	//extern part set to 1
-	x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] | (0xFF << ((x1->size + 1) % BITS == 0 ? BITS : (x1->size + 1) % BITS));
-	x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] | (0xFF << ((x2->size + 1) % BITS == 0 ? BITS : (x2->size + 1) % BITS));
+	x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] | (0xFF << (x1->size%BITS + 1));
+	x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] | (0xFF << (x2->size%BITS + 1));
 	size_t min = x1_count <= x2_count ? x1_count : x2_count;
 	size_t max = x1_count <= x2_count ? x2_count : x1_count;
 
@@ -186,8 +186,10 @@ bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2)
 	size_t x1_count = (x1->size >> SHIFT) + ((x1->size & MASK) ? 1 : 1);
 	size_t x2_count = (x2->size >> SHIFT) + ((x2->size & MASK) ? 1 : 1);
 	//extern part set to 0
-	x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] & (~(0xFF << ((x1->size + 1) % BITS == 0 ? BITS : (x1->size + 1) % BITS)));
-	x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] & (~(0xFF << ((x2->size + 1) % BITS == 0 ? BITS : (x2->size + 1) % BITS)));
+	//x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] & (~(0xFF << ((x1->size + 1) % BITS == 0 ? BITS : (x1->size + 1) % BITS)));
+	//x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] & (~(0xFF << ((x2->size + 1) % BITS == 0 ? BITS : (x2->size + 1) % BITS)));
+	x1->bitmap[x1_count - 1] = x1->bitmap[x1_count - 1] & (~(0xFF << (x1->size%BITS + 1)));
+	x2->bitmap[x2_count - 1] = x2->bitmap[x2_count - 1] & (~(0xFF << (x2->size%BITS + 1)));
 	size_t min = x1_count <= x2_count ? x1_count : x2_count;
 	size_t max = x1_count <= x2_count ? x2_count : x1_count;
 
@@ -208,6 +210,25 @@ bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2)
 	}
 
 	return ans;
+}
+
+size_t bitmap_count(bitmap_t* bitmap)
+{
+	size_t count = (bitmap->size >> SHIFT) + ((bitmap->size & MASK) ? 1 : 1);
+
+	//extern part set to 0
+	bitmap->bitmap[count - 1] = bitmap->bitmap[count - 1] & (~(0xFF << (bitmap->size%BITS + 1)));
+	size_t c = 0;
+	for (int i = 0; i < count; i++)
+	{
+		unsigned char n = bitmap->bitmap[i];
+		for (c ; n; ++c)
+		{
+			n &= (n - 1); // 清除最低位的1
+		}
+	}
+	
+	return c;
 }
 
 bitmap_t* bitmap_move_range_to_new(const bitmap_t* x, size_t offset, size_t count)
