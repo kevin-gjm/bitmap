@@ -53,6 +53,9 @@ bitmap_t* bitmap_or(const bitmap_t* x1, const bitmap_t* x2);
 /* return a new bitmap of x1&x2 */
 bitmap_t* bitmap_and(const bitmap_t* x1, const bitmap_t* x2);
 
+/* calculate the result of x1&x2, and store it to parameter result */
+int bitmap_samesize_and(bitmap_t* result, const bitmap_t* x2);
+
 /* return a new bitmap of x1^x2 */
 bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2);
 

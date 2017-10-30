@@ -179,6 +179,21 @@ bitmap_t* bitmap_and(const bitmap_t* x1, const bitmap_t* x2)
 
 	return ans;
 }
+
+int bitmap_samesize_and(bitmap_t* result, const bitmap_t* x2)
+{
+	if (result->size != x2->size)
+	{
+		return -1;
+	}
+	
+	size_t count = (x2->size >> SHIFT) + ((x2->size & MASK) ? 1 : 1);
+	for (int i = 0; i < count; i++)
+	{
+		result->bitmap[i] = x2->bitmap[i] & result->bitmap[i];
+	}
+	return 0;
+}
 bitmap_t* bitmap_xor(const bitmap_t* x1, const bitmap_t* x2)
 {
 	size_t i;
