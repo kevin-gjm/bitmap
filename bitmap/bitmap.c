@@ -65,14 +65,18 @@ void bitmap_destroy(bitmap_t *bitmap)
   }
 }
 
-void bitmap_set(bitmap_t *bitmap, size_t index)
+int bitmap_set(bitmap_t *bitmap, size_t index)
 {
+	if (index > bitmap->size) return -1;
 	bitmap->bitmap[index >> SHIFT] |= 1 << (index & MASK);
+	return 0;
 }
 
-void bitmap_clear(bitmap_t *bitmap, size_t index)
+int bitmap_clear(bitmap_t *bitmap, size_t index)
 {
+	if (index > bitmap->size) return -1;
 	bitmap->bitmap[index >> SHIFT] &= ~(1 << (index & MASK));
+	return 0;
 }
 
 int bitmap_test(bitmap_t *bitmap, size_t index)

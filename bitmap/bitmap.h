@@ -27,10 +27,10 @@ bitmap_t *bitmap_create(size_t size);
 void bitmap_destroy(bitmap_t *bitmap);
 
 /* set bitmap the index-th bit to 1 */
-void bitmap_set(bitmap_t *bitmap, size_t index);
+int bitmap_set(bitmap_t *bitmap, size_t index);
 
 /* clear bitmap the index-th bit to 0 */
-void bitmap_clear(bitmap_t *bitmap, size_t index);
+int bitmap_clear(bitmap_t *bitmap, size_t index);
 
 /* test bitmap the index-th bit is 1 or 0 */
 int  bitmap_test(bitmap_t *bitmap, size_t index);
