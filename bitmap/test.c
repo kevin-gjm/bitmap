@@ -3,6 +3,21 @@
 
 int main(int argc, char *argv[]) 
 {
+	bitmap_t *bitmap = bitmap_create(1000);
+	bitmap_set_range(bitmap, 0, 99);
+	int t =bitmap_count(bitmap);
+	for (int i = 0; i <= 100; i++)
+	{
+		if (bitmap_test(bitmap, i))
+		{
+			printf("%d:1\n",i);
+		}
+		else
+		{
+			printf("%d:0\n",i);
+		}
+	}
+	return 0;
 #if 0
   size_t size;
   for (size = 0; size <= 1024; ++size) {

@@ -81,7 +81,8 @@ int bitmap_clear(bitmap_t *bitmap, size_t index)
 
 int bitmap_test(bitmap_t *bitmap, size_t index)
 {
-  return (bitmap->bitmap[index >> SHIFT] & (1 << (index & MASK))) >> (index & MASK);
+	if (index > bitmap->size) return 0;
+	return (bitmap->bitmap[index >> SHIFT] & (1 << (index & MASK))) >> (index & MASK);
 }
 
 void bitmap_set_all(bitmap_t *bitmap)
